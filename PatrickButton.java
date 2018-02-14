@@ -2,8 +2,8 @@
 /**
  * Write a description of class PatrickButton here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Patrick 
+ * @version 1.0
  */
 public class PatrickButton implements PushButton
 {
@@ -19,7 +19,7 @@ public class PatrickButton implements PushButton
     }
     public int factorial(int input){
         int result = 1;
-        for(int i = 0; i<input; i++){
+        for(int i = 1; i<=input; i++){
             result = result * i;
         }
         return result;

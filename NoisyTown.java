@@ -7,27 +7,10 @@
  */
 public class NoisyTown
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
-    /**
-     * Constructor for objects of class NoisyTown
-     */
-    public NoisyTown()
-    {
-        // initialise instance variables
-        x = 0;
-    }
-
-    /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
+   public static void main (String [] args){
+        Noiseable [] a = new Noiseable [3];
+        a[0] = nwe Dog();
+        a[1] = new Troll();
+        a[2] = new Fork();
     }
 }
