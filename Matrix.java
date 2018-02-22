@@ -27,21 +27,23 @@ public class Matrix
             for(int i = row+1; i < IA.length; i++){
                 IA[i]++;
             }
-            
+
         }
     }
 
     public double get(int row, int column){ //3,4
         ArrayList<Integer> IAchecks = new ArrayList<Integer>();
         int endA = IA[row+1] - 1; //IA[4] - 1, 8 - 1, 7(furthest index to check in A)
-        int diffA = endA - IA[row] - 1; //7 - IA[3] - 1 , 7 - 7 - 1, 3 (number of elements in row 2)
+        int diffA = endA - IA[row] + 1; //7 - IA[3] + 1 , 7 - 7 + 1,  (number of elements in row 2)
         for (int i = 0; i < diffA; i++){ //for number of elements in row 2 (diffA)
-            IAchecks.add(endA - i); //add to an ArrayList the relevant indices of A (7, 6, 5)
+            IAchecks.add(endA - i); //add to an ArrayList the relevant indices of A (7)
         }
         for(int item: IAchecks){
-            if(JA[item] == column){
-                indexOfReturn = item;
-            }
+            if(item < JA.length){
+                if(JA[item] == column){
+                    indexOfReturn = item;
+                }
+            } else {return 0;}
         }
         return A[indexOfReturn];
     }
@@ -69,8 +71,8 @@ public class Matrix
     private void insert(double value, int row, int column){
 
     }
-   
-   A  = [ 10 20 30 40 50 60 70 80 ]
-   IA = [  0  2  4  7  8 ]
-   JA = [  0  1  1  3  2  3  4  5 ]  
+
+    //A  = [ 10 20 30 40 50 60 70 80 ]
+    //IA = [  0  2  4  7  8 ]
+    //JA = [  0  1  1  3  2  3  4  5 ]  
 }
