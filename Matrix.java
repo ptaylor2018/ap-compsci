@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 /**
  * Write a description of class PatrickMatrix here.
@@ -21,6 +22,7 @@ public class Matrix
     }
 
     public void set(int row, int column, double value){
+
         double exist = get(row, column);
         if (exist !=0){
             if (value != 0){
@@ -46,7 +48,20 @@ public class Matrix
                 }
                 int lowerBound = IA[row]; //not included
                 int upperBound = IA[row + 1] + 1; //included
+
+                if(JA.size() != 0){
+                    for(int i = lowerBound; i < upperBound; i++){
+                        if(JA.get(i) > column){
+                            A.add(i-1,value);
+                        }
+                    } 
+                }else{
+                    A.add(value);
+                    JA.add(column);
+
+                }
             }
+
         }
     }
 
@@ -54,35 +69,39 @@ public class Matrix
         ArrayList<Integer> IAchecks = new ArrayList<Integer>();
         int endA = IA[row+1] - 1; //IA[4] - 1, 8 - 1, 7(furthest index to check in A)
         int diffA = endA - IA[row] + 1; //7 - IA[3] + 1 , 7 - 7 + 1,  (number of elements in row 2)
+        int indexOfReturn =0;
         for (int i = 0; i < diffA; i++){ //for number of elements in row 2 (diffA)
             IAchecks.add(endA - i); //add to an ArrayList the relevant indices of A (7)
         }
         for(int item: IAchecks){
-            if(item < JA.length){
-                if(JA[item] == column){
+            if(item < JA.size()){
+                if(JA.get(item) == column){
                     indexOfReturn = item;
                 }
             } else {return 0;}
         }
-        return A[indexOfReturn];
+        if(IAchecks.isEmpty()){return 0;}
+        return A.get(indexOfReturn);
     }
+
     public int getPlace(int row, int column){
         ArrayList<Integer> IAchecks = new ArrayList<Integer>();
         int endA = IA[row+1] - 1; //IA[4] - 1, 8 - 1, 7(furthest index to check in A)
         int diffA = endA - IA[row] + 1; //7 - IA[3] + 1 , 7 - 7 + 1,  (number of elements in row 2)
+        int indexOfReturn = 0;
         for (int i = 0; i < diffA; i++){ //for number of elements in row 2 (diffA)
             IAchecks.add(endA - i); //add to an ArrayList the relevant indices of A (7)
         }
         for(int item: IAchecks){
-            if(item < JA.length){
-                if(JA[item] == column){
+            if(item < JA.size()){
+                if(JA.get(item) == column){
                     indexOfReturn = item;
                 }
             } else {return 0;}
         }
         return indexOfReturn;
     }
-
+    /*
     public static Matrix add(Matrix first, Matrix second){
 
     }
@@ -103,10 +122,10 @@ public class Matrix
 
     }
 
-    private void insert(double value, int row, int column){
+    public static void printMatrix(Matrix matrix){
 
     }
-
+     */
     //A  = [ 10 20 30 40 50 60 70 80 ]
     //IA = [  0  2  4  7  8 ]
     //JA = [  0  1  1  3  2  3  4  5 ]  
