@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Write a description of class PatrickMatrix here.
+ * Does matrix operations
  * 
  * @author Patrick Taylor 
  * @version 1.0
@@ -11,7 +11,7 @@ public class Matrix
     private ArrayList<Double> A = new ArrayList<Double>();
     private int [] IA;
     private ArrayList<Integer> JA = new ArrayList<Integer>();
-    private int NNZ = 0;
+    private int NNZ = 0; //technically redundant. unused by code, but probably useful for future class expansions
     private int Arows = 0;
     private int Acolumns = 0;
     /**
@@ -21,7 +21,7 @@ public class Matrix
      */
     public Matrix(int rows, int columns){
         IA = new int[rows+1];
-        IA[0] = 0;
+        IA[0] = 0; //technically redundant, but prevents trying to access IA[-1] (which the code would want to do otherwise)
         Arows = rows;
         Acolumns = columns;
     }
@@ -72,12 +72,9 @@ public class Matrix
             if (value != 0){
                 //insert value into A
                 int lowerBound = IA[row]; 
-                //System.out.println(lowerBound);
                 int upperBound = IA[row + 1]; 
-                //System.out.println(upperBound);
                 if(JA.size() != 0){
                     for(int i = lowerBound; i < upperBound; i++){
-                        //System.out.println("something happened");
                         if(JA.get(i) > column){
                             A.add(i,value);
                             JA.add(i, column);
@@ -89,18 +86,22 @@ public class Matrix
                 }else{
                     A.add(value);
                     JA.add(column);
-
                 }
                 NNZ++;
                 for(int i = row+1; i < IA.length; i++){
                     IA[i]++;
                 }
-
             }
-
         }
     }
 
+    /**
+     * returns value from some position (row, column) in matrix
+     * @param row the row to be returns from
+     * @param column the column to be returned from
+     * @return the value at (row, column)
+     * @throws MatrixException if you are trying to access a value outised of the matrix
+     */
     public double get(int row, int column)throws MatrixException{ //3,4
         if(column > Acolumns - 1){throw new MatrixException("You are trying to access a column of the Matrix that doesn't exist!");}
         if(row > Arows - 1){throw new MatrixException("You are trying to access a row of the Matrix that doesn't exist!");}
@@ -123,6 +124,12 @@ public class Matrix
         return 0;
     }
 
+    /**
+     * returns the index in A of something at (row, column)
+     * @param row the row to be returned from
+     * @param column the column to be returned from
+     * @return the index in A of the thing at (row, column)
+     */
     public int getPlace(int row, int column){
         ArrayList<Integer> IAchecks = new ArrayList<Integer>();
         int endA = IA[row+1] - 1; //IA[4] - 1, 8 - 1, 7(furthest index to check in A)
@@ -141,6 +148,13 @@ public class Matrix
         return indexOfReturn;
     }
 
+    /**
+     * adds two matrices together
+     * @param first the first matrix to be added
+     * @param second the second matrix to be added
+     * @throws Matrix Exception if either matrix is null or the matrices are of different dimensions
+     * @return the matrix sum of first and second
+     */
     public static Matrix add(Matrix first, Matrix second)throws MatrixException{
         if(first == null || second == null){throw new MatrixException("You can't use null matrices in this method!");}
         if(first.getColumns() == second.getColumns() && first.getRows() == second.getRows()) {
@@ -155,6 +169,13 @@ public class Matrix
         }else{throw new MatrixException("You are trying to add matrices of different dimensions!");}
     }
 
+    /**
+     * subtracts one matrix from another
+     * @param first the matrix being subtracted from
+     * @param second the matrix being subtracted
+     * @throws MatrixException if either matirx is null or if the matrices are of different dimensions
+     * @return the matrix difference of first and second
+     */
     public static Matrix sub(Matrix first, Matrix second)throws MatrixException{
         if(first == null || second == null){throw new MatrixException("You can't use null matrices in this method!");}
         if(first.getColumns() == second.getColumns() && first.getRows() == second.getRows()) {
@@ -169,6 +190,13 @@ public class Matrix
         }else{throw new MatrixException("You are trying to subtract matrices of different dimensions!");}
     }
 
+    /**
+     * multiplies two matrices
+     * @param first the first of the matrices being multiplied
+     * @param second the second of the matrices being multiplied
+     * @throws MatrixException if either matrix is null or if the number of columns of the first matrix is not the same as the number of rows of the second
+     * @return the product of the matrices
+     */
     public static Matrix mult(Matrix first, Matrix second)throws MatrixException{
         if(first == null || second == null){throw new MatrixException("You can't use null matrices in this method!");}
         if(first.getColumns() == second.getRows()){
@@ -186,6 +214,13 @@ public class Matrix
         }else {throw new MatrixException("Your matrices have the wrong dimensions to be multiplied! The number of columns of the first must match the number of rows of the second!");}
     }
 
+    /**
+     * multiplies a matrix by a scalar
+     * @param matrix the matrix the scalar will multiply
+     * @param scalar the scalar which matrix will be multiplied by
+     * @throw MatrixException if the matrix is null
+     * @return the product of the scalar and matrix
+     */
     public static Matrix mult(Matrix matrix, double scalar)throws MatrixException{
         if(matrix == null){throw new MatrixException("You can't use null matrices in this method!");}
         Matrix mult = new Matrix(matrix.getRows(),matrix.getColumns());
@@ -198,6 +233,12 @@ public class Matrix
         return mult;
     }
 
+    /**
+     * transposes the matrix
+     * @param matrix the matrix to be transposed
+     * @throw MatrixException if the matrix is null
+     * @return the transposed matrix
+     */
     public static Matrix transpose(Matrix matrix)throws MatrixException{
         if(matrix == null){throw new MatrixException("You can't use null matrices in this method!");}
         Matrix transpose = new Matrix(matrix.getColumns(), matrix.getRows());
@@ -210,6 +251,9 @@ public class Matrix
         return transpose;
     }
 
+    /**
+     * prints the matrix out in CSR
+     */
     public void printMatrix(){
         System.out.print("A: ");
         for (double item : A){
